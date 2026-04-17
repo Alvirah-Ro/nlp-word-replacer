@@ -103,7 +103,8 @@ if text:
 
     print("New text:", " ".join(new_text))
 
-    st.write(f"The new text with category name substitutions is: {" ".join(new_text)}")
+    st.write("The new text with category name substitutions is:")
+    st.write(f"{" ".join(new_text)}")
 
 
 # for token in doc:
