@@ -1,6 +1,12 @@
-import spacy
+"""
+Fun Mad-libs style word game
+"""
+
 import random
+import re
 import streamlit as st
+import spacy
+
 
 st.title("Fun Word Game!")
 
@@ -26,43 +32,43 @@ if text:
     # Name parts of speech
     # Create a dictionary of lists
     results = {
-    "proper noun": [],
-    "noun singular": [],
-    "noun plural": [],
-    "adjective": [],
-    "verb": [],
-    "verb past tense": [],
-    "verb ending in -ing": [],
-    "adverb": [],
-    "number": [],
-    "interjection": [],
-    "color": []
+    "Proper_Noun": [],
+    "Noun_Singular": [],
+    "Noun_Plural": [],
+    "Adjective": [],
+    "Verb": [],
+    "Verb_Past_Tense": [],
+    "Verb_Ending_In_-Ing": [],
+    "Adverb": [],
+    "Number": [],
+    "Interjection": [],
+    "Color": []
 }
 
     # Add parts of speach to grouped lists
     for token in doc:
         if token.tag_ == "NNP":
-            results["proper noun"].append(token.text)
+            results["Proper_Noun"].append(token.text)
         elif token.tag_ == "NN":
-            results["noun singular"].append(token.text)
+            results["Noun_Singular"].append(token.text)
         elif token.tag_ == "NNS":
-            results["noun plural"].append(token.text)
+            results["Noun_Plural"].append(token.text)
         elif token.text.lower() in COLOR:
-            results["color"].append(token.text)
+            results["Color"].append(token.text)
         elif token.pos_ == "ADJ":
-            results["adjective"].append(token.text)
+            results["Adjective"].append(token.text)
         elif token.tag_ == "VB":
-            results["verb"].append(token.text)
+            results["Verb"].append(token.text)
         elif token.tag_ == "VBD":
-            results["verb past tense"].append(token.text)
+            results["Verb_Past_Tense"].append(token.text)
         elif token.tag_ == "VBG":
-            results["verb ending in -ing"].append(token.text)
+            results["Verb_Ending_In_-Ing"].append(token.text)
         elif token.pos_ == "ADV":
-            results["adverb"].append(token.text)
+            results["Adverb"].append(token.text)
         elif token.pos_ == "NUM":
-            results["number"].append(token.text)
+            results["Number"].append(token.text)
         elif token.pos_ == "INTJ":
-            results["interjection"].append(token.text)
+            results["Interjection"].append(token.text)
 
 # for category, words in results.items():
 #     print(f"{category.title()}: {words}")
@@ -97,14 +103,21 @@ if text:
         replacement = token.text
         if token.text.lower() in word_to_category:
             # Replace word with category title
-            replacement = word_to_category[token.text.lower()].title()
+            replacement = f"[{word_to_category[token.text.lower()].title()}]"
             
         new_text.append(replacement)
 
+    new_text = " ".join(new_text)
     print("New text:", " ".join(new_text))
+
+    # Identify words to replace by brackets
+    print(type(new_text))
+    placeholders = re.findall(r"\[(.*?)\]", new_text)
+    st.write("Placeholders:", placeholders)
 
     st.write("The new text with category name substitutions is:")
     st.write(f"{" ".join(new_text)}")
+
 
 
 # for token in doc:
